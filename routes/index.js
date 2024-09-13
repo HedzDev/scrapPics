@@ -5,11 +5,11 @@ const { checkBody } = require("../utils/checkBody");
 const { scrapUrl } = require("../utils/scrapUrl");
 
 router.post("/scrap-images", async (req, res) => {
-  const { url } = req.body;
+  const url = req.query.url;
+  console.log("url", url);
 
-  if (!checkBody(req.body, ["url"])) {
-    res.status(400).json({ message: "Missing URL" });
-    return;
+  if (!url) {
+    return res.status(400).json({ message: "URL is required" });
   }
 
   try {
