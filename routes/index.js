@@ -1,18 +1,16 @@
 var express = require("express");
 var router = express.Router();
 const fs = require("fs");
-const { checkBody } = require("../utils/checkBody");
+
 const { scrapUrl } = require("../utils/scrapUrl");
 
 router.post("/scrap-images", async (req, res) => {
-  const url = req.query.url;
-  console.log("url", url);
-
-  if (!url) {
-    return res.status(400).json({ message: "URL is required" });
-  }
-
   try {
+    const url = req.query.url;
+
+    if (!url) {
+      return res.status(400).json({ message: "URL is required" });
+    }
     const images = await scrapUrl(url);
 
     res.json({ images });
