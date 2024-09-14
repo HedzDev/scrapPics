@@ -21,11 +21,11 @@ router.post("/scrap-images", async (req, res) => {
 
   try {
     const images = await scrapUrl(url);
-
     res.json({ images });
   } catch (error) {
-    console.error("Error scraping images:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res
+      .status(404)
+      .json({ message: "Error scraping images: " + error.message });
   }
 });
 
