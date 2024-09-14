@@ -9,6 +9,9 @@ const fs = require("fs");
  */
 
 async function processUrl(fileName, url) {
+  if (!fs.existsSync("urls.json")) {
+    fs.writeFileSync("urls.json", "[]");
+  }
   const processedUrls = JSON.parse(fs.readFileSync(fileName, "utf8"));
 
   if (!processedUrls.includes(url)) {
