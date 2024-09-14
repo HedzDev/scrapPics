@@ -1,9 +1,43 @@
-### Scrap Pics
+# Scrap Pics
 
-This API scraps images from any url and save processed urls in a json file
+Scrap Pic is an API for retrieving images from a URL.
 
-* 1 Clone this repository
+## Installation
 
-* 2 Type npm install into the project's root
+First of all you need to install [NodeJs](https://nodejs.org/fr/download/package-manager), choose the LTS version for more stability.
 
-* 3 Open Postman or any other platform and query your first URL !
+```javascript
+pip install foobar
+```
+
+**1. Clone this repository or download the zip file**
+```javascript
+git clone 
+```
+
+**2. Install all required dependencies, type the following command at the root of the project**
+```javascript
+npm install
+```
+
+**3. Run the server**
+```javascript
+npm start
+```
+OR
+
+If you've already installed [nodemon](https://nodemon.io/)
+```javascript
+nodemon
+```
+## Usage
+
+**This API has 2 endpoints**
+  - /scrap-images to retireve all images:
+    ```
+    http://localhost:3000/scrap-images?url=YOUR_URL
+    ```
+  - /processed-urls to see URLS already processed:
+    ```
+    http://localhost:3000/processed-urls
+    ```
