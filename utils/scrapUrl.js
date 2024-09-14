@@ -2,6 +2,12 @@ const puppeteer = require("puppeteer");
 const { isURLValid } = require("./isURLValid");
 const fs = require("fs");
 
+/**
+ * process an url and save it to a file if it is not already there
+ * @param {*} fileName
+ * @param {*} url
+ */
+
 async function processUrl(fileName, url) {
   const processedUrls = JSON.parse(fs.readFileSync(fileName, "utf8"));
 
@@ -12,6 +18,12 @@ async function processUrl(fileName, url) {
     );
   }
 }
+
+/**
+ * scrap an url and return the images found
+ * @param {*} url
+ * @returns {Array} images
+ */
 
 async function scrapUrl(url) {
   const browser = await puppeteer.launch();

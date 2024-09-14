@@ -4,6 +4,15 @@ const fs = require("fs");
 
 const { scrapUrl } = require("../utils/scrapUrl");
 
+/**
+ * scrap images from a URL
+ * @route POST /scrap-images
+ * @param {string} url.query.required - URL to scrap images from
+ * @returns {object} 200 - An array of images
+ * @returns {Error} 400 - Bad request URL is required
+ * @returns {Error} 500 - Internal server error
+ */
+
 router.post("/scrap-images", async (req, res) => {
   const url = req.query.url;
   if (!url) {
@@ -19,6 +28,12 @@ router.post("/scrap-images", async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+/**
+ * get processed URLs
+ * @route GET /processed-urls
+ * @returns {object} 200 - An array of processed URLs
+ */
 
 router.get("/processed-urls", (req, res) => {
   if (!fs.existsSync("urls.json")) {

@@ -1,5 +1,11 @@
 const puppeteer = require("puppeteer");
 
+/**
+ * check if an URL is valid
+ * @param {*} url
+ * @returns {Boolean} isValid
+ */
+
 async function isURLValid(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
