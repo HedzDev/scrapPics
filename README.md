@@ -6,10 +6,6 @@ Scrap Pic is an API for retrieving images from a URL.
 
 First of all you need to install [NodeJs](https://nodejs.org/fr/download/package-manager), choose the LTS version for more stability.
 
-```javascript
-pip install foobar
-```
-
 **1. Clone this repository or download the zip file**
 ```javascript
 git clone https://github.com/HedzDev/scrapPics.git
