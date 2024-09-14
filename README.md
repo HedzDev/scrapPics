@@ -29,7 +29,7 @@ nodemon
 ## Usage
 
 **This API has 2 endpoints**
-  - /scrap-images to retireve all images:
+  - /scrap-images to retrieve all images:
     ```
     http://localhost:3000/scrap-images?url=YOUR_URL
     ```
