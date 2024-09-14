@@ -21,6 +21,9 @@ router.post("/scrap-images", async (req, res) => {
 });
 
 router.get("/processed-urls", (req, res) => {
+  if (!fs.existsSync("urls.json")) {
+    fs.writeFileSync("urls.json", "[]");
+  }
   return res.json({ processedURLS: fs.readFileSync("urls.json", "utf8") });
 });
 

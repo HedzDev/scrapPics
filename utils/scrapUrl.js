@@ -2,10 +2,7 @@ const puppeteer = require("puppeteer");
 const { isURLValid } = require("./isURLValid");
 const fs = require("fs");
 
-async function hasAlreadyBeenProcessed(fileName, url) {
-  if (!fs.existsSync(fileName)) {
-    fs.writeFileSync(fileName, "[]");
-  }
+async function processUrl(fileName, url) {
   const processedUrls = JSON.parse(fs.readFileSync(fileName, "utf8"));
 
   if (!processedUrls.includes(url)) {
@@ -26,7 +23,7 @@ async function scrapUrl(url) {
   try {
     await page.goto(url, { waitUntil: "networkidle0" });
 
-    await hasAlreadyBeenProcessed("urls.json", url);
+    await processUrl("urls.json", url);
 
     const images = await page.evaluate((baseUrl) => {
       return Array.from(document.images).map((img) => {
