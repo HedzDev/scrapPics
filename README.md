@@ -12,7 +12,7 @@ pip install foobar
 
 **1. Clone this repository or download the zip file**
 ```javascript
-git clone 
+git clone https://github.com/HedzDev/scrapPics.git
 ```
 
 **2. Install all required dependencies, type the following command at the root of the project**
