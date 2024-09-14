@@ -5,12 +5,12 @@ const fs = require("fs");
 const { scrapUrl } = require("../utils/scrapUrl");
 
 router.post("/scrap-images", async (req, res) => {
-  try {
-    const url = req.query.url;
+  const url = req.query.url;
+  if (!url) {
+    return res.status(400).json({ message: "URL is required" });
+  }
 
-    if (!url) {
-      return res.status(400).json({ message: "URL is required" });
-    }
+  try {
     const images = await scrapUrl(url);
 
     res.json({ images });
@@ -20,8 +20,8 @@ router.post("/scrap-images", async (req, res) => {
   }
 });
 
-router.get("/used-urls", (req, res) => {
-  return res.json({ usedUrls: fs.readFileSync("urls.json", "utf8") });
+router.get("/processed-urls", (req, res) => {
+  return res.json({ processedURLS: fs.readFileSync("urls.json", "utf8") });
 });
 
 module.exports = router;

@@ -19,11 +19,11 @@ async function hasAlreadyBeenProcessed(fileName, url) {
 async function scrapUrl(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+  if (!(await isURLValid(url))) {
+    throw new Error("Invalid URL");
+  }
 
   try {
-    if (!(await isURLValid(url))) {
-      throw new Error("Invalid URL");
-    }
     await page.goto(url, { waitUntil: "networkidle0" });
 
     await hasAlreadyBeenProcessed("urls.json", url);
