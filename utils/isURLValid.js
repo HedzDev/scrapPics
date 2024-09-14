@@ -7,18 +7,25 @@ const puppeteer = require("puppeteer");
  */
 
 async function isURLValid(url) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+  let browser = null;
+  let page = null;
 
   try {
-    const response = await page.goto(url, { waitUntil: "networkidle0" });
-    const isValid = response.ok();
-    await browser.close();
-    return isValid;
+    browser = await puppeteer.launch();
+    page = await browser.newPage();
+
+    const response = await page.goto(url, {
+      waitUntil: "networkidle0",
+      timeout: 30000, // 30 secondes de timeout
+    });
+
+    return response.ok();
   } catch (error) {
-    console.error(`Error checking URL: ${error.message}`);
-    await browser.close();
+    console.error(`Erreur lors de la vérification de l'URL: ${error.message}`);
     return false;
+  } finally {
+    if (page) await page.close();
+    if (browser) await browser.close();
   }
 }
 

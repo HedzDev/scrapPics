@@ -15,17 +15,15 @@ const { scrapUrl } = require("../utils/scrapUrl");
 
 router.post("/scrap-images", async (req, res) => {
   const url = req.query.url;
-  if (!url) {
-    return res.status(400).json({ message: "URL is required" });
-  }
 
   try {
+    if (!url) {
+      return res.status(400).json({ message: "URL is required" });
+    }
     const images = await scrapUrl(url);
     res.json({ images });
   } catch (error) {
-    return res
-      .status(404)
-      .json({ message: "Error scraping images: " + error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
 

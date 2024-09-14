@@ -26,13 +26,16 @@ async function processUrl(fileName, url) {
  */
 
 async function scrapUrl(url) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  if (!(await isURLValid(url))) {
-    throw new Error("Invalid URL");
-  }
-
+  let browser = null;
+  let page = null;
   try {
+    if (!(await isURLValid(url))) {
+      throw new Error("URL invalide");
+    }
+
+    browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
     await page.goto(url, { waitUntil: "networkidle0" });
 
     await processUrl("urls.json", url);
@@ -44,12 +47,13 @@ async function scrapUrl(url) {
       });
     }, url);
 
-    await browser.close();
     return images;
   } catch (error) {
-    console.error(`Error scrapping URL: ${error.message}`);
-    await browser.close();
-    return;
+    console.error(`Erreur lors du scraping de l'URL: ${error.message}`);
+    throw new Error(`Erreur lors du scraping de l'URL: ${error.message}`);
+  } finally {
+    if (page) await page.close();
+    if (browser) await browser.close();
   }
 }
 
