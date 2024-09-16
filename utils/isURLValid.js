@@ -11,7 +11,7 @@ async function isURLValid(url) {
   let page = null;
 
   try {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({ headless: "new" });
     page = await browser.newPage();
 
     const response = await page.goto(url, {
