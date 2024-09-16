@@ -28,7 +28,7 @@ nodemon
 ```
 ## Usage
 
-**This API has 2 endpoints**
+**This API has 2 endpoints (you need to install [Postman](https://www.postman.com/) or [Thunder Client](https://www.thunderclient.com/) to test the endpoints)**
   - /scrap-images to retrieve all images:
     ```
     http://localhost:3000/scrap-images?url=YOUR_URL
