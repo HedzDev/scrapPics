@@ -4,13 +4,13 @@ const fs = require("fs");
 
 /**
  * process an url and save it to a file if it is not already there
- * @param {*} fileName
- * @param {*} url
+ * @param {string} fileName
+ * @param {string} url
  */
 
-async function processUrl(fileName, url) {
-  if (!fs.existsSync("urls.json")) {
-    fs.writeFileSync("urls.json", "[]");
+async function saveProcessedUrl(fileName, url) {
+  if (!fs.existsSync(fileName)) {
+    fs.writeFileSync(fileName, "[]");
   }
   const processedUrls = JSON.parse(fs.readFileSync(fileName, "utf8"));
 
@@ -33,7 +33,7 @@ async function scrapUrl(url) {
   let page = null;
   try {
     if (!(await isURLValid(url))) {
-      throw new Error("URL invalide");
+      throw new Error("Invalid URL");
     }
 
     browser = await puppeteer.launch();
@@ -41,19 +41,20 @@ async function scrapUrl(url) {
 
     await page.goto(url, { waitUntil: "networkidle0" });
 
-    await processUrl("urls.json", url);
+    await saveProcessedUrl("urls.json", url);
 
     const images = await page.evaluate((baseUrl) => {
       return Array.from(document.images).map((img) => {
         const src = img.src;
-        return src.startsWith("http") ? src : new URL(src, baseUrl).href;
+        return src.startsWith("http" || "https")
+          ? src
+          : new URL(src, baseUrl).href;
       });
     }, url);
 
     return images;
   } catch (error) {
-    console.error(`Erreur lors du scraping de l'URL: ${error.message}`);
-    throw new Error(`Erreur lors du scraping de l'URL: ${error.message}`);
+    throw new Error(`Error while scraping the URL: ${error.message}`);
   } finally {
     if (page) await page.close();
     if (browser) await browser.close();

@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 
 /**
  * check if an URL is valid
- * @param {*} url
+ * @param {string} url
  * @returns {Boolean} isValid
  */
 
@@ -16,12 +16,12 @@ async function isURLValid(url) {
 
     const response = await page.goto(url, {
       waitUntil: "networkidle0",
-      timeout: 30000, // 30 secondes de timeout
+      timeout: 25000,
     });
 
     return response.ok();
   } catch (error) {
-    console.error(`Erreur lors de la vérification de l'URL: ${error.message}`);
+    console.error(`Error while checking the URL: ${error.message}`);
     return false;
   } finally {
     if (page) await page.close();
