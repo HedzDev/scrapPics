@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer");
-const { isURLValid } = require("./isURLValid");
 const fs = require("fs");
+const { isURLValid } = require("./isURLValid");
+const { normalizeUrl } = require("./normalizeURL");
 
 /**
  * process an url and save it to a file if it is not already there
@@ -8,7 +9,7 @@ const fs = require("fs");
  * @param {string} url
  */
 
-async function saveProcessedUrl(fileName, url) {
+function saveProcessedUrl(fileName, url) {
   if (!fs.existsSync(fileName)) {
     fs.writeFileSync(fileName, "[]");
   }
@@ -32,29 +33,34 @@ async function scrapUrl(url) {
   let browser = null;
   let page = null;
   try {
-    if (!(await isURLValid(url))) {
+    const normalizedUrl = normalizeUrl(url);
+    if (!(await isURLValid(normalizedUrl))) {
       throw new Error("Invalid URL");
     }
 
-    browser = await puppeteer.launch();
-    const page = await browser.newPage();
+    browser = await puppeteer.launch({ headless: "new" });
+    page = await browser.newPage();
 
-    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.goto(normalizedUrl, {
+      waitUntil: "networkidle0",
+      timeout: 25000,
+    });
 
-    await saveProcessedUrl("urls.json", url);
+    saveProcessedUrl("urls.json", normalizedUrl);
 
     const images = await page.evaluate((baseUrl) => {
       return Array.from(document.images).map((img) => {
         const src = img.src;
-        return src.startsWith("http" || "https")
+        return src.startsWith("http") || src.startsWith("https")
           ? src
           : new URL(src, baseUrl).href;
       });
-    }, url);
+    }, normalizedUrl);
 
     return images;
   } catch (error) {
-    throw new Error(`Error while scraping the URL: ${error.message}`);
+    console.log(`Error while scraping the URL: ${error.message}`);
+    throw error;
   } finally {
     if (page) await page.close();
     if (browser) await browser.close();
