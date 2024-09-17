@@ -5,14 +5,13 @@
  */
 
 function normalizeUrl(url) {
-  // Si l'URL ne commence pas par un protocole, on ajoute "https://"
   if (!/^https?:\/\//i.test(url)) {
     url = "https://" + url;
   }
 
   try {
     const urlObject = new URL(url);
-    // Si le domaine ne commence pas par "www.", on l'ajoute
+
     if (
       !urlObject.hostname.startsWith("www.") &&
       urlObject.hostname !== "localhost"
@@ -21,7 +20,6 @@ function normalizeUrl(url) {
     }
     return urlObject.toString();
   } catch {
-    // Si la création de l'objet URL échoue, on retourne l'URL d'origine
     return url;
   }
 }

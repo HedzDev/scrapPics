@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const fs = require("fs");
 
-const { scrapUrl } = require("../utils/scrapUrl");
+const { scrapUrl } = require("../services/scrapUrl");
 
 /**
  * scrap images from a URL

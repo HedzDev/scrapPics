@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const { isURLValid } = require("./isURLValid");
-const { normalizeUrl } = require("./normalizeURL");
+const { isURLValid } = require("../utils/isURLValid");
+const { normalizeUrl } = require("../utils/normalizeURL");
 
 /**
  * process an url and save it to a file if it is not already there
@@ -25,13 +25,14 @@ function saveProcessedUrl(fileName, url) {
 
 /**
  * scrap an url and return the images found
- * @param {*} url
+ * @param {string} url
  * @returns {Array} images
  */
 
 async function scrapUrl(url) {
   let browser = null;
   let page = null;
+
   try {
     const normalizedUrl = normalizeUrl(url);
     if (!(await isURLValid(normalizedUrl))) {
