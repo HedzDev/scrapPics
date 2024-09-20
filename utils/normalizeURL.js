@@ -10,7 +10,7 @@ function normalizeUrl(url) {
   }
 
   try {
-    const urlObject = new URL(url);
+    let urlObject = new URL(url);
 
     if (
       !urlObject.hostname.startsWith("www.") &&

@@ -1,6 +1,5 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const { isURLValid } = require("../utils/isURLValid");
 const { normalizeUrl } = require("../utils/normalizeURL");
 
 /**
@@ -35,17 +34,18 @@ async function scrapUrl(url) {
 
   try {
     const normalizedUrl = normalizeUrl(url);
-    if (!(await isURLValid(normalizedUrl))) {
-      throw new Error("Invalid URL");
-    }
 
     browser = await puppeteer.launch({ headless: "new" });
     page = await browser.newPage();
 
-    await page.goto(normalizedUrl, {
+    const response = await page.goto(normalizedUrl, {
       waitUntil: "networkidle0",
       timeout: 25000,
     });
+
+    if (!response.ok()) {
+      throw new Error("URL is not reachable");
+    }
 
     saveProcessedUrl("urls.json", normalizedUrl);
 
